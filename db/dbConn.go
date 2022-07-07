@@ -19,6 +19,7 @@ func DBinstance() *mongo.Client {
 	}
 
 	MongoDB := os.Getenv("MONGODB_URL")
+	fmt.Printf("zz : ", MongoDB)
 	client, err := mongo.NewClient(options.Client().ApplyURI(MongoDB))
 
 	if err != nil {
@@ -28,7 +29,7 @@ func DBinstance() *mongo.Client {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	err := client.Connect(ctx)
+	err = client.Connect(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -41,6 +42,6 @@ var Client *mongo.Client = DBinstance()
 
 func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 
-	var collection *mongo.Collection = client.Database("").Collection(collectionName)
+	var collection *mongo.Collection = client.Database("cluster0").Collection(collectionName)
 	return collection
 }
